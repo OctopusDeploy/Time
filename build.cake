@@ -21,6 +21,7 @@ var localPackagesDir = "../LocalPackages";
 var packageName = "Octopus.Time";
 var globalAssemblyFile = "./source/" + packageName + "/Properties/AssemblyInfo.cs";
 var projectToPackage = "./source/" + packageName;
+var cleanups = new List<IDisposable>(); 
 
 var isContinuousIntegrationBuild = !BuildSystem.IsLocalBuild;
 
@@ -40,7 +41,11 @@ Setup(context =>
 
 Teardown(context =>
 {
-    Information("Finished running tasks.");
+    Information("Cleaning up");
+    foreach(var item in cleanups)
+        item.Dispose();
+
+		Information("Finished running tasks.");
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -95,6 +100,7 @@ Task("__UpdateProjectJsonVersion")
     .Does(() =>
 {
     var projectToPackagePackageJson = $"{projectToPackage}/project.json";
+    cleanups.Add(new AutoRestoreFile(projectToPackagePackageJson));
     Information("Updating {0} version -> {1}", projectToPackagePackageJson, nugetVersion);
 
     TransformConfig(projectToPackagePackageJson, projectToPackagePackageJson, new TransformationCollection {
