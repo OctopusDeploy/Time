@@ -76,7 +76,8 @@ Task("__Restore")
 Task("__UpdateAssemblyVersionInformation")
     .Does(() =>
 {
-     GitVersion(new GitVersionSettings {
+    cleanups.Add(new AutoRestoreFile(globalAssemblyFile));
+	GitVersion(new GitVersionSettings {
         UpdateAssemblyInfo = true,
         UpdateAssemblyInfoFilePath = globalAssemblyFile
     });
@@ -152,6 +153,19 @@ Task("__CopyToLocalPackages")
     CreateDirectory(localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"{packageName}.{nugetVersion}.nupkg"), localPackagesDir);
 });
+
+private class AutoRestoreFile : IDisposable
+{
+	private byte[] _contents;
+	private string _filename;
+	public AutoRestoreFile(string filename)
+	{
+		_filename = filename;
+		_contents = IO.File.ReadAllBytes(filename);
+	}
+
+	public void Dispose() => IO.File.WriteAllBytes(_filename, _contents);
+}
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
