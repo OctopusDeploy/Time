@@ -18,7 +18,6 @@ var configuration = Argument("configuration", "Release");
 ///////////////////////////////////////////////////////////////////////////////
 var artifactsDir = "./artifacts";
 var localPackagesDir = "../LocalPackages";
-var packageName = "Octopus.Time";
 
 GitVersion gitVersionInfo;
 string nugetVersion;
