@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <AssemblyName>Octopus.Time</AssemblyName>
+    <PackageId>Octopus.Time</PackageId>
+    <PackageIconUrl>http://i.octopusdeploy.com/resources/Avatar3_360.png</PackageIconUrl>
+    <AssemblyName>Octopus.Time</AssemblyName>
+    <PackageId>Octopus.Time</PackageId>
+    <Authors>Octopus Deploy</Authors>
+    <Description>Time interfaces for Octopus, an opinionated deployment solution for .NET applications</Description>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+</Project>
