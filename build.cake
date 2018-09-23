@@ -104,7 +104,7 @@ Task("Publish")
     .Does(() =>
 {
 	NuGetPush($"{artifactsDir}/Octopus.Time.{nugetVersion}.nupkg", new NuGetPushSettings {
-		Source = "https://f.feedz.io/octopus-deploy/dependencies/nugetapi/v3/index.json",
+		Source = "https://f.feedz.io/octopus-deploy/dependencies/nuget",
 		ApiKey = EnvironmentVariable("FeedzIoApiKey")
 	});
 
