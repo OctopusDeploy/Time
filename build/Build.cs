@@ -30,9 +30,10 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Solution] readonly Solution Solution;
-    [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion] readonly GitVersion GitVersion;
+    [Solution]
+    readonly Solution Solution;
+    [GitVersion(NoFetch = true)]
+    readonly GitVersion GitVersion;
 
     AbsolutePath SourceDirectory => RootDirectory / "source";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
@@ -80,7 +81,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetPack(_ => _
-                .SetProject("./source/Octopus.Time")
+                .SetProject(Solution)
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .SetNoBuild(true)
