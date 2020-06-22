@@ -59,6 +59,7 @@ class Build : NukeBuild
         {
             GitVersion = GitVersionTasks
                 .GitVersion(s => s
+                    .SetTargetPath(".")
                     .SetNoFetch(true)
                     .SetFramework("netcoreapp3.0")
                 )
@@ -106,7 +107,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             EnsureExistingDirectory(LocalPackagesDirectory);
-            CopyFileToDirectory(ArtifactsDirectory / $"Octopus.Time.{GitVersion.NuGetVersion}.nupkg", LocalPackagesDirectory);
+            CopyFileToDirectory(ArtifactsDirectory / $"Octopus.Time.{GitVersion.NuGetVersion}.nupkg", LocalPackagesDirectory, FileExistsPolicy.Overwrite);
         });
 
     Target Default => _ => _
