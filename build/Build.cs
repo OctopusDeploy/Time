@@ -101,7 +101,7 @@ class Build : NukeBuild
         });
 
     Target CopyToLocalPackages => _ => _
-        .Requires(() => IsLocalBuild)
+        .OnlyWhenStatic(() => IsLocalBuild)
         .DependsOn(Pack)
         .Executes(() =>
         {
