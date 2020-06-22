@@ -5,16 +5,12 @@ VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Octopus.Time", "Octopus.Time\Octopus.Time.csproj", "{548A5FD8-E8DB-4632-AB97-EF39008ACACC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{298D1FAB-28AE-463D-BE8E-B143B20169D7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{298D1FAB-28AE-463D-BE8E-B143B20169D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{298D1FAB-28AE-463D-BE8E-B143B20169D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{548A5FD8-E8DB-4632-AB97-EF39008ACACC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{548A5FD8-E8DB-4632-AB97-EF39008ACACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{548A5FD8-E8DB-4632-AB97-EF39008ACACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
