@@ -32,8 +32,8 @@ class Build : NukeBuild
 
     [Solution]
     readonly Solution Solution;
-    [GitVersion(NoFetch = true)]
-    readonly GitVersion GitVersion;
+
+    GitVersion GitVersion;
 
     AbsolutePath SourceDirectory => RootDirectory / "source";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
@@ -54,14 +54,24 @@ class Build : NukeBuild
                 .SetProjectFile(Solution));
         });
 
+    Target CalculateVersion => _ => _
+        .Executes(() =>
+        {
+            GitVersion = GitVersionTasks
+                .GitVersion(s => s
+                    .SetNoFetch(true)
+                    .SetFramework("netcoreapp3.0")
+                )
+                .Result;
+
+        });
+
     Target Compile => _ => _
+        .DependsOn(CalculateVersion)
         .DependsOn(Clean)
         .DependsOn(Restore)
         .Executes(() =>
         {
-            if(!IsLocalBuild)
-                TeamCity.Instance.SetBuildNumber(GitVersion.NuGetVersion);
-
             var nugetVersion = GitVersion.NuGetVersion;
 
             Logger.Info("Building Octopus.Time v{0}", nugetVersion);
@@ -77,6 +87,7 @@ class Build : NukeBuild
         });
 
     Target Pack => _ => _
+        .DependsOn(CalculateVersion)
         .DependsOn(Compile)
         .Executes(() =>
         {
