@@ -29,7 +29,8 @@ string nugetVersion;
 Setup(context =>
 {
     gitVersionInfo = GitVersion(new GitVersionSettings {
-        OutputType = GitVersionOutput.Json
+        OutputType = GitVersionOutput.Json,
+        NoFetch = true
     });
 
     if(BuildSystem.IsRunningOnTeamCity)
