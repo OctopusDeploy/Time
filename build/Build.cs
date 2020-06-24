@@ -57,6 +57,8 @@ class Build : NukeBuild
     Target CalculateVersion => _ => _
         .Executes(() =>
         {
+            // NOTE: If GitVersion has already been run and has set environment variables, this step will
+            // be cheap to run - it will just pick those variables up rather than recalculate them.
             GitVersion = GitVersionTasks
                 .GitVersion(s => s
                     .SetTargetPath(".")
