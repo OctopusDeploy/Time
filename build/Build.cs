@@ -41,8 +41,6 @@ class Build : NukeBuild
     Target CalculateVersion => _ => _
         .Executes(() =>
         {
-            // NOTE: If GitVersion has already been run and has set environment variables, this step will
-            // be cheap to run - it will just pick those variables up rather than recalculate them.
             GitVersion = GitVersionTasks
                 .GitVersion(s => s
                     .SetTargetPath(".")
@@ -58,9 +56,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            var nugetVersion = GitVersion.NuGetVersion;
-
-            Logger.Info("Building Octopus.Time v{0}", nugetVersion);
+            Logger.Info("Building Octopus.Time v{0}", GitVersion.NuGetVersion);
             Logger.Info("Informational Version {0}", GitVersion.InformationalVersion);
 
             DotNetBuild(_ => _
@@ -82,7 +78,7 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .SetNoBuild(true)
-                .AddProperty("Version", GitVersion.NuGetVersion)
+                .AddProperty("Version", GitVersion.FullSemVer)
             );
         });
 
@@ -92,7 +88,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             EnsureExistingDirectory(LocalPackagesDirectory);
-            CopyFileToDirectory(ArtifactsDirectory / $"Octopus.Time.{GitVersion.NuGetVersion}.nupkg",
+            CopyFileToDirectory(ArtifactsDirectory / $"Octopus.Time.{GitVersion.FullSemVer}.nupkg",
                 LocalPackagesDirectory, FileExistsPolicy.Overwrite);
         });
 
