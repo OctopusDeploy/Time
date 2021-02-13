@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Octopus.Time", "Octopus.Time\Octopus.Time.csproj", "{548A5FD8-E8DB-4632-AB97-EF39008ACACC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_build", "..\build\_build.csproj", "{F411FB68-C429-473F-BD14-DECA0733E888}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +17,9 @@ Global
 		{548A5FD8-E8DB-4632-AB97-EF39008ACACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{548A5FD8-E8DB-4632-AB97-EF39008ACACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{548A5FD8-E8DB-4632-AB97-EF39008ACACC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{298D1FAB-28AE-463D-BE8E-B143B20169D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{298D1FAB-28AE-463D-BE8E-B143B20169D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{298D1FAB-28AE-463D-BE8E-B143B20169D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{298D1FAB-28AE-463D-BE8E-B143B20169D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F411FB68-C429-473F-BD14-DECA0733E888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F411FB68-C429-473F-BD14-DECA0733E888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F411FB68-C429-473F-BD14-DECA0733E888}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
