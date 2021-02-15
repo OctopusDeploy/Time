@@ -45,7 +45,7 @@ class Build : NukeBuild
                 .GitVersion(s => s
                     .SetTargetPath(".")
                     .SetNoFetch(true)
-                    .SetFramework("netcoreapp3.0")
+                    .SetFramework("netcoreapp3.1")
                 )
                 .Result;
         });
