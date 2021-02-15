@@ -46,7 +46,6 @@ class Build : NukeBuild
         .Executes(() =>
         {
             Logger.Info("Building Octopus.Time v{0}", OctoVersionInfo.FullSemVer);
-            Logger.Info("Informational Version {0}", OctoVersionInfo.FullSemVer);
 
             DotNetBuild(_ => _
                 .SetProjectFile(Solution)
