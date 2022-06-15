@@ -18,7 +18,7 @@ env:
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 jobs:
-  dependabot:
+  prettybot:
     runs-on: ubuntu-latest
     if: ${{ (github.actor == 'Octobob') && (contains(github.head_ref, 'prettybot')) }}
     steps:
