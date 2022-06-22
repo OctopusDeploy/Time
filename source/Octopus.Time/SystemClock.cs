@@ -4,8 +4,14 @@ namespace Octopus.Time
 {
     public class SystemClock : IClock
     {
-        public DateTimeOffset GetUtcTime() => DateTimeOffset.UtcNow;
+        public DateTimeOffset GetUtcTime()
+        {
+            return DateTimeOffset.UtcNow;
+        }
 
-        public DateTimeOffset GetLocalTime() => DateTimeOffset.Now;
+        public DateTimeOffset GetLocalTime()
+        {
+            return DateTimeOffset.Now;
+        }
     }
 }

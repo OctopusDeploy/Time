@@ -6,16 +6,34 @@ namespace Octopus.Time
     {
         private DateTimeOffset now;
 
-        public FixedClock(DateTimeOffset now) => this.now = now;
+        public FixedClock(DateTimeOffset now)
+        {
+            this.now = now;
+        }
 
-        public void Set(DateTimeOffset value) => this.now = value;
+        public DateTimeOffset GetUtcTime()
+        {
+            return Clone().now.ToUniversalTime();
+        }
 
-        public void WindForward(TimeSpan time) => this.now = this.now.Add(time);
+        public DateTimeOffset GetLocalTime()
+        {
+            return Clone().now.ToLocalTime();
+        }
 
-        public DateTimeOffset GetUtcTime() => this.Clone().now.ToUniversalTime();
+        public void Set(DateTimeOffset value)
+        {
+            now = value;
+        }
 
-        public DateTimeOffset GetLocalTime() => this.Clone().now.ToLocalTime();
+        public void WindForward(TimeSpan time)
+        {
+            now = now.Add(time);
+        }
 
-        private FixedClock Clone() => (FixedClock) this.MemberwiseClone();
+        private FixedClock Clone()
+        {
+            return (FixedClock)MemberwiseClone();
+        }
     }
 }
