@@ -60,7 +60,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            Log.Information("Building Octopus.Time v{0}", OctoVersionInfo.FullSemVer);
+            Log.Information("Building Octopus.Time v{Version}", OctoVersionInfo.FullSemVer);
 
             DotNetBuild(_ => _
                 .SetProjectFile(Solution)
