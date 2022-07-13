@@ -1,24 +1,33 @@
+// ReSharper disable RedundantUsingDirective
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.OctoVersion;
 using Nuke.Common.Utilities.Collections;
-using OctoVersion.Core;
+using Serilog;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using Nuke.OctoVersion;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    const string CiBranchNameEnvVariable = "OCTOVERSION_CurrentBranch";
+
+    readonly Configuration Configuration = Configuration.Release;
 
     [Solution] readonly Solution Solution;
+    
+    [Parameter("Whether to auto-detect the branch name - this is okay for a local build, but should not be used under CI.")] 
+    readonly bool AutoDetectBranch = IsLocalBuild;
+    
+    [Parameter("Branch name for OctoVersion to use to calculate the version number. Can be set via the environment variable " + CiBranchNameEnvVariable + ".", Name = CiBranchNameEnvVariable)]
+    string BranchName { get; set; }
 
-    [NukeOctoVersion] readonly OctoVersionInfo OctoVersionInfo;
+    [OctoVersion(BranchParameter = nameof(BranchName), AutoDetectBranchParameter = nameof(AutoDetectBranch))] 
+    public OctoVersionInfo OctoVersionInfo;
 
     AbsolutePath SourceDirectory => RootDirectory / "source";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
@@ -40,21 +49,30 @@ class Build : NukeBuild
                 .SetProjectFile(Solution));
         });
 
+    Target CalculateVersion => _ => _
+        .Executes(() =>
+        {
+            //all the magic happens inside `[NukeOctoVersion]` above. we just need a target for TeamCity to call
+        });
+
     Target Compile => _ => _
         .DependsOn(Clean)
         .DependsOn(Restore)
         .Executes(() =>
         {
-            Logger.Info("Building Octopus.Time v{0}", OctoVersionInfo.FullSemVer);
+            Log.Information("Building Octopus.Time v{0}", OctoVersionInfo.FullSemVer);
 
             DotNetBuild(_ => _
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetVersion(OctoVersionInfo.FullSemVer)
+                .SetAssemblyVersion(OctoVersionInfo.MajorMinorPatch)
+                .SetFileVersion(OctoVersionInfo.MajorMinorPatch)
+                .SetInformationalVersion(OctoVersionInfo.InformationalVersion)
                 .EnableNoRestore());
         });
 
     Target Pack => _ => _
+        .DependsOn(CalculateVersion)
         .DependsOn(Compile)
         .Executes(() =>
         {
@@ -62,7 +80,7 @@ class Build : NukeBuild
                 .SetProject(Solution)
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
-                .EnableNoBuild()
+                .SetNoBuild(true)
                 .AddProperty("Version", OctoVersionInfo.FullSemVer)
             );
         });
@@ -78,6 +96,7 @@ class Build : NukeBuild
         });
 
     Target Default => _ => _
+        .DependsOn(Pack)
         .DependsOn(CopyToLocalPackages);
 
     /// Support plugins are available for:
